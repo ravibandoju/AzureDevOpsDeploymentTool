@@ -38,8 +38,9 @@ jobs:
         id: set_secret
         run: |
           key=value
-          echo "::add-mask::$TOKEN1"
-          echo "masked_secret=$TOKEN1" >> "$GITHUB_OUTPUT"
+          echo "::add-mask::$key"
+          echo "masked_secret=$key" >> "$GITHUB_OUTPUT"
+          echo "test=$key" >> "$GITHUB_OUTPUT"
 
   job2:
     needs: job1  # job2 depends on job1
@@ -48,6 +49,7 @@ jobs:
       - name: Use Secret in job2
         run: |
           echo "The masked secret is: ${{ needs.job1.outputs.masked_secret }}"
+          echo "The masked secret is: ${{ needs.job1.outputs.test }}"
 
       - name: Check
         run: |
