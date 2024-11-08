@@ -34,8 +34,8 @@ jobs:
   job1:
     runs-on: ubuntu-latest
     outputs:
-      output1: ${{ steps.step1.outputs.masked_secret }}
-      output2: ${{ steps.step2.outputs.test }}
+      output1: ${{ steps.set_secret.outputs.masked_secret }}
+      output2: ${{ steps.set_secret.outputs.test }}
     steps:
       - name: Set Secret Value (Simulated)
         id: set_secret
@@ -43,7 +43,7 @@ jobs:
           key=value
           echo "::add-mask::$key"
           echo "masked_secret=$key" >> "$GITHUB_OUTPUT"
-          echo "test=value2" >> "$GITHUB_OUTPUT"
+          echo "test=world" >> "$GITHUB_OUTPUT"
           echo $key
           echo $masked_secret
   job2:
