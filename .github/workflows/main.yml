@@ -15,6 +15,7 @@ jobs:
     steps:
       - id: step1
         run: |
+          TOKEN1=some_value
           echo "::add-mask::$TOKEN1"
           echo "test=$TOKEN1" >> "$GITHUB_OUTPUT"
       - id: step2
