@@ -55,3 +55,4 @@ jobs:
           else
             echo "SECRET_VALUE does not match the expected value."
             exit 1  # Exit with a non-zero status if the check fails
+          fi
