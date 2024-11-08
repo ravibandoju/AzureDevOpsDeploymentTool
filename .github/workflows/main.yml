@@ -1,0 +1,26 @@
+name: Example Workflow
+
+on:
+  push:
+    branches:
+      - main  # or whichever branch you want this workflow to trigger on
+
+jobs:
+  job1:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v2
+
+      - name: Set Variable
+        run: echo "MY_VARIABLE=my_value" >> $GITHUB_ENV  # This will set the variable for subsequent steps
+
+  job2:
+    needs: job1  # job2 will only run after job1 completes successfully
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v2
+
+      - name: Use Variable
+        run: echo "The value of MY_VARIABLE is: ${{ env.MY_VARIABLE }}"
