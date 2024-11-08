@@ -18,6 +18,7 @@ jobs:
           TOKEN1=some_value
           echo "::add-mask::$TOKEN1"
           echo "test=$TOKEN1" >> "$GITHUB_OUTPUT"
+          echo $TOKEN1
       - id: step2
         run: echo "test=world" >> "$GITHUB_OUTPUT"
   job2:
