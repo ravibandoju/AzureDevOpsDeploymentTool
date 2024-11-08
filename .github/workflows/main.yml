@@ -33,6 +33,9 @@ on:
 jobs:
   job1:
     runs-on: ubuntu-latest
+    outputs:
+      output1: ${{ steps.step1.outputs.masked_secret }}
+      output2: ${{ steps.step2.outputs.test }}
     steps:
       - name: Set Secret Value (Simulated)
         id: set_secret
@@ -42,19 +45,23 @@ jobs:
           echo "masked_secret=$key" >> "$GITHUB_OUTPUT"
           echo "test=value2" >> "$GITHUB_OUTPUT"
           echo $key
-
+          echo $masked_secret
   job2:
     needs: job1  # job2 depends on job1
     runs-on: ubuntu-latest
     steps:
+      - env:
+          OUTPUT1: ${{needs.job1.outputs.output1}}
+          OUTPUT2: ${{needs.job1.outputs.output2}}
+          
       - name: Use Secret in job2
         run: |
-          echo "The masked secret is: ${{ needs.job1.outputs.masked_secret }}"
-          echo "The un masked secret is: ${{ needs.job1.outputs.test }}"
+          echo "The masked secret is: $OUTPUT1"
+          echo "The un masked secret is: $OUTPUT2"
 
       - name: Check
         run: |
-          if [ ${{ needs.job1.outputs.masked_secret }} == "value" ]; then
+          if [ $OUTPUT1 == "value" ]; then
             echo "SECRET_VALUE matches the expected value."
           else
             echo "SECRET_VALUE does not match the expected value."
