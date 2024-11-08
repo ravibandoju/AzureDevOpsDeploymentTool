@@ -37,8 +37,8 @@ jobs:
       - name: Set Secret Value (Simulated)
         id: set_secret
         run: |
-          # Example secret from GitHub Actions secrets
-          echo "::set-output name=masked_secret::${{ secrets.MY_SECRET }}"  # Set as output for job2
+          key=value
+          echo "::set-output name=masked_secret::$key"  # Set as output for job2
 
   job2:
     needs: job1  # job2 depends on job1
@@ -47,3 +47,11 @@ jobs:
       - name: Use Secret in job2
         run: |
           echo "The masked secret is: ${{ needs.job1.outputs.masked_secret }}"
+
+      - name: Check
+        run: |
+          if [ ${{ needs.job1.outputs.masked_secret }} == "value" ]; then
+            echo "SECRET_VALUE matches the expected value."
+          else
+            echo "SECRET_VALUE does not match the expected value."
+            exit 1  # Exit with a non-zero status if the check fails
